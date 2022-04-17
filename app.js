@@ -121,7 +121,7 @@ class Player {
 const player = new Player();
 player.startPlayback();
 
-app.listen(process.env.port || 8080, err => {
+app.listen(process.env.PORT || 8080, err => {
     if (err) {
         console.log(err);
     }
