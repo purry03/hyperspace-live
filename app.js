@@ -109,7 +109,7 @@ class Player {
     async startPlayback() {
         await this.generateQueue();
         while (true) {
-            if (this.queue.length <= 1) {
+            if (this.queue.length < this.queueLength) {
                 await this.generateQueue();
             }
             await this.playSong();

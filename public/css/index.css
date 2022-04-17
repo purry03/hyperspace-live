@@ -57,4 +57,5 @@ player .controls img {
     padding: 10px 20px;
     cursor: pointer;
     user-select: none;
+    outline: none;
 }
