@@ -68,8 +68,9 @@ class Player {
 
     killListeners() {
         setInterval(() => {
-            this.filterAliveListeners();
+            // this.filterAliveListeners();
             this.removeDuplicateListeners();
+            console.log("Active Listerners: " + this.listeners.length);
         }, 3000);
     }
 
@@ -161,8 +162,5 @@ app.get("/stream", (req, res) => {
 
 
 app.get("/keep-alive", (req, res) => {
-    if (!player.alive.includes(req.ip)) {
-        player.alive.push(req.ip);
-    }
     res.sendStatus(200);
 });

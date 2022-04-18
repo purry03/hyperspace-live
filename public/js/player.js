@@ -1,8 +1,5 @@
 setInterval(() => {
-    $.get("/keep-alive", function (err, response) {
-        if (err) {
-            console.error(err);
-        }
+    $.get("/keep-alive", function (res) {
     });
 }, 1000);
 
