@@ -27,6 +27,7 @@ class Player {
         this.queueLength = 10;
         this.queue = [];
         this.listeners = [];
+        this.alive = [];
         this.bitRate = 0;
         this.liveStream = undefined;
         this.throttledStream = undefined;
@@ -39,9 +40,9 @@ class Player {
     removeDuplicateListeners() {
         let activeListeners = [];
         let toIterate = this.listeners.slice().reverse();
-        for (listener of toIterate) {
+        for (let listener of toIterate) {
             let IPexists = false;
-            for (activeListener of activeListeners) {
+            for (let activeListener of activeListeners) {
                 if (listener.ip == activeListener.ip) {
                     IPexists = true;
                     break;
@@ -52,6 +53,24 @@ class Player {
             }
         }
         this.listeners = activeListeners;
+    }
+
+    filterAliveListeners() {
+        let aliveListeners = [];
+        for (let listener of this.listeners) {
+            if (this.alive.includes(listener.ip)) {
+                aliveListeners.push(listener);
+            }
+        }
+        this.listeners = aliveListeners;
+        this.alive = [];
+    }
+
+    killListeners() {
+        setInterval(() => {
+            this.filterAliveListeners();
+            this.removeDuplicateListeners();
+        }, 3000);
     }
 
     addToQueue(song) {
@@ -107,6 +126,7 @@ class Player {
     }
 
     async startPlayback() {
+        this.killListeners();
         await this.generateQueue();
         while (true) {
             if (this.queue.length < this.queueLength) {
@@ -137,4 +157,12 @@ app.get("/", (req, res) => {
 
 app.get("/stream", (req, res) => {
     player.addListener({ ip: req.ip, res });
-})
+});
+
+
+app.get("/keep-alive", (req, res) => {
+    if (!player.alive.includes(req.ip)) {
+        player.alive.push(req.ip);
+    }
+    res.sendStatus(200);
+});
