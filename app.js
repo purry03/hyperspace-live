@@ -70,7 +70,7 @@ class Player {
         setInterval(() => {
             // this.filterAliveListeners();
             this.removeDuplicateListeners();
-            console.log("Active Listerners: " + this.listeners.length);
+            console.log("Active Listerners: " + this.listeners.map((listener) => { return listener.ip }));
         }, 3000);
     }
 
@@ -157,6 +157,7 @@ app.get("/", (req, res) => {
 
 
 app.get("/stream", (req, res) => {
+    res.setHeader("Content-Type", "audio/mpeg");
     player.addListener({ ip: req.ip, res });
 });
 
