@@ -1,7 +1,7 @@
-setInterval(() => {
-    $.get("/keep-alive", function (res) {
-    });
-}, 1000);
+// setInterval(() => {
+//     $.get("/keep-alive", function (res) {
+//     });
+// }, 1000);
 
 function pauseStream() {
     $("#player").prop("volume", 0);
